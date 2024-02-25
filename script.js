@@ -9,21 +9,175 @@ let count = document.getElementById('count');
 let category = document.getElementById('category');
 let submit = document.getElementById('submit');
 
-// ADD PRODUCT
-function getTotal() {
+// GET TOTAL
 
+function getTotal() {
     // CALCULATE THE RESULT AND CONVERTING STRING TO NUMBERS
-   let result = (+price.value + +taxes.value + +ads.value) - +discount.value;
+    let result = (+price.value + +taxes.value + +ads.value) - +discount.value;
 
     // Update the total element with the result
     total.textContent = result;
 
+    // Set the background color based on the result
+    if (result !== 0) {
+        total.style.backgroundColor = '#040';
+    } else {
+        total.style.backgroundColor = ''; 
     }
+}
+
 
 // CREATE AN ARRAY DECLARED VARIABLES
 let inputElements = [price, taxes, ads, discount];
 
 // SET UP EVENT LISTINERS USING FOREACH
-inputElements.forEach(function (element) {
+inputElements.forEach(function(element) {
     element.addEventListener('input', getTotal);
 });
+
+getTotal()
+
+
+// CREATE PRODUCT 
+
+let dataProduct;
+
+//CHECK AND BRING LOCAL STORAGE DATA
+if (localStorage.product) {
+
+dataProduct = JSON.parse(localStorage.product)
+
+} else {
+    dataProduct = [];
+}
+
+function createPro() {
+
+
+// CREAT OBJECTS
+let newProduct = {
+    title : title.value,
+    price : price.value,
+    taxes : taxes.value,
+    ads : ads.value,
+    discount : discount.value,
+    total : total.textContent,
+    count : count.value,
+    category : category.value,
+}
+ 
+// PUSH NEW OBJECT TO DATA ARRAY
+dataProduct.push(newProduct);
+
+// PUT NEW PRODUCT ON LOCALSTORAGE
+localStorage.setItem('product', JSON.stringify(dataProduct))
+
+// CALL  CLEAR AND  SHOW  FUNCTION 
+clearData();
+showData();
+}
+
+submit.addEventListener('click', createPro)
+
+// CLEAR INPUTS
+
+function clearData() {
+
+    title.value = '';
+    price.value = '';
+    taxes.value = '';
+    ads.value = '';
+    discount.value = '';
+    total.textContent = '';
+    count.value = '';
+    category.value = '';
+
+}
+
+submit.addEventListener('click', clearData);
+
+
+//READ
+function showData() {
+
+    let tableBody = document.getElementById('tbody');
+
+    tableBody.innerHTML = '';
+
+    for (let i = 0; i < dataProduct.length; i++) {
+        let row = tableBody.insertRow();
+
+        for (let key in dataProduct[i]) {
+            if (dataProduct[i].hasOwnProperty(key)) {
+                let cell = row.insertCell();
+                cell.textContent = dataProduct[i][key];
+            }
+        }
+
+        let deleteButton = createButton('Delete', () => deleteRow(i));
+        let updateButton = createButton('Update', () => updateRow(i));
+
+        row.insertCell().appendChild(deleteButton);
+        row.insertCell().appendChild(updateButton);
+    }
+     getTotal();
+}
+
+function createButton(text, clickHandler) {
+    let button = document.createElement('button');
+    button.textContent = text;
+    button.addEventListener('click', clickHandler);
+    return button;
+}
+
+// CALL showData FUNCTION ON PAGE LOAD
+showData();
+    
+ 
+//QUICK AND DIRTY showData LOL
+
+/* function showData() {
+
+   
+    let tableHTML = '';
+
+   array
+    for (let i = 0; i < dataProduct.length; i++) {
+       
+        tableHTML += `<tr>
+                          <td>${i}</td>
+                          <td>${dataProduct[i].title}</td>
+                          <td>${dataProduct[i].price}</td>
+                          <td>${dataProduct[i].taxes}</td>
+                          <td>${dataProduct[i].ads}</td>
+                          <td>${dataProduct[i].discount}</td>
+                          <td>${dataProduct[i].total}</td>
+                          <td>${dataProduct[i].count}</td>
+                          <td>${dataProduct[i].category}</td>
+                          <td><button id="update">update</button></td>
+                          <td><button id="delete">delete</button></td>
+                      </tr>`;
+    }
+
+    document.getElementById('tbody').innerHTML = tableHTML;
+}  */
+
+//********************************************************************** ***/
+
+
+//DELETE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
