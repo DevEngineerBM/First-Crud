@@ -114,7 +114,7 @@ function showData() {
             }
         }
 
-        let deleteButton = createButton('Delete', () => deleteRow(i));
+        let deleteButton = createButton('Delete', () => deletePro(i));
         let updateButton = createButton('Update', () => updateRow(i));
 
         row.insertCell().appendChild(deleteButton);
@@ -123,16 +123,13 @@ function showData() {
      getTotal();
 }
 
-function createButton(text, clickHandler) {
+ function createButton(text, clickHandler) {
     let button = document.createElement('button');
     button.textContent = text;
     button.addEventListener('click', clickHandler);
     return button;
 }
-
-// CALL showData FUNCTION ON PAGE LOAD
-showData();
-    
+   
  
 //QUICK AND DIRTY showData LOL
 
@@ -162,10 +159,22 @@ showData();
     document.getElementById('tbody').innerHTML = tableHTML;
 }  */
 
-//********************************************************************** ***/
+//DELETE PRODUCT
 
+function deletePro(i) {
 
-//DELETE
+    // DELETE FROM ARRAY
+   dataProduct.splice(i,1);
+
+   //UPGRADE THE DATE
+   localStorage.product = JSON.stringify(dataProduct);
+
+   // SHOW THE UPGRADED DATA 
+   showData();
+}
+
+// CALL showData FUNCTION ON PAGE LOAD
+showData();
 
 
 
