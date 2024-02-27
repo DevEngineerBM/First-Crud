@@ -134,11 +134,13 @@ function showData() {
 
         let deleteButton = createButton('Delete', () => deletePro(i));
         let updateButton = createButton('Update', () => updateRow(i));
-
+       
         row.insertCell().appendChild(deleteButton);
         row.insertCell().appendChild(updateButton);
+        
     }
      getTotal();
+    
 }
 
  function createButton(text, clickHandler) {
@@ -192,6 +194,33 @@ function deletePro(i) {
 }
 
 // DELETE ALL PRODUCT 
+
+let clearButton = document.createElement('button');
+
+
+let table = document.querySelector('table')
+
+clearButton.innerText = 'clear all';
+
+clearButton.className = 'clear-all'
+
+table.parentElement.insertBefore(clearButton, table);
+
+function clearAll() {
+
+    dataProduct.length = 0;
+
+      // Update the localStorage
+    localStorage.product = JSON.stringify(dataProduct);
+
+     // SHOW THE UPGRADED DATA 
+   showData();
+} 
+
+ 
+
+clearButton.addEventListener('click', clearAll)
+
 
 
 
