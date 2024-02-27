@@ -12,19 +12,26 @@ let submit = document.getElementById('submit');
 // GET TOTAL
 
 function getTotal() {
-    // CALCULATE THE RESULT AND CONVERTING STRING TO NUMBERS
-    let result = (+price.value + +taxes.value + +ads.value) - +discount.value;
+    // ENSURE THE INPUTS ARE NUMBERS, IF NOT, SET THEM TO 0
+    let priceValue = parseFloat(price.value) || 0;
+    let taxesValue = parseFloat(taxes.value) || 0;
+    let adsValue = parseFloat(ads.value) || 0;
+    let discountValue = parseFloat(discount.value) || 0;
 
-    // Update the total element with the result
+    // CALCULATE THE RESULT
+    let result = (priceValue + taxesValue + adsValue) - discountValue;
+
+    // UPDATE THE TOTAL ELEMENT WITH THE RESULT
     total.textContent = result;
 
-    // Set the background color based on the result
+    // SET THE BACKGROUND COLOR BASED ON THE RESUT
     if (result !== 0) {
         total.style.backgroundColor = '#040';
     } else {
         total.style.backgroundColor = ''; 
     }
 }
+
 
 
 // CREATE AN ARRAY DECLARED VARIABLES
@@ -53,9 +60,19 @@ dataProduct = JSON.parse(localStorage.product)
 
 function createPro() {
 
+//CHECK THE FIELDS ARE NOT EMPTY
 
-// CREAT OBJECTS
+    if (!title.value || !price.value || !taxes.value || !ads.value || !discount.value || !count.value || !category.value) {
+        console.log('One or more fields are empty');
+        alert('Please fill necessary fields');
+        return;
+    } 
+    
+
+
+// CREATE OBJECTS
 let newProduct = {
+
     title : title.value,
     price : price.value,
     taxes : taxes.value,
@@ -67,6 +84,7 @@ let newProduct = {
 }
  
 // PUSH NEW OBJECT TO DATA ARRAY
+
 dataProduct.push(newProduct);
 
 // PUT NEW PRODUCT ON LOCALSTORAGE
@@ -172,6 +190,16 @@ function deletePro(i) {
    // SHOW THE UPGRADED DATA 
    showData();
 }
+
+// DELETE ALL PRODUCT 
+
+
+
+
+
+
+
+
 
 // CALL showData FUNCTION ON PAGE LOAD
 showData();
