@@ -1,22 +1,22 @@
 // ELEMENTS DECLARATION
-let title = document.getElementById('title');
-let price = document.getElementById('price');
-let taxes = document.getElementById('taxes');
-let ads = document.getElementById('ads');
-let discount = document.getElementById('discount');
-let total = document.getElementById('total');
-let count = document.getElementById('count');
-let category = document.getElementById('category');
-let submit = document.getElementById('submit');
+const title = document.getElementById('title');
+const price = document.getElementById('price');
+const taxes = document.getElementById('taxes');
+const ads = document.getElementById('ads');
+const discount = document.getElementById('discount');
+const total = document.getElementById('total');
+const count = document.getElementById('count');
+const category = document.getElementById('category');
+const submit = document.getElementById('submit');
 
 // GET TOTAL
 
 function getTotal() {
     // ENSURE THE INPUTS ARE NUMBERS, IF NOT, SET THEM TO 0
-    let priceValue = parseFloat(price.value) || 0;
-    let taxesValue = parseFloat(taxes.value) || 0;
-    let adsValue = parseFloat(ads.value) || 0;
-    let discountValue = parseFloat(discount.value) || 0;
+    const priceValue = parseFloat(price.value) || 0;
+    const taxesValue = parseFloat(taxes.value) || 0;
+    const adsValue = parseFloat(ads.value) || 0;
+    const discountValue = parseFloat(discount.value) || 0;
 
     // CALCULATE THE RESULT
     let result = (priceValue + taxesValue + adsValue) - discountValue;
@@ -71,7 +71,7 @@ function createPro() {
 
 
 // CREATE OBJECTS
-let newProduct = {
+const newProduct = {
 
     title : title.value,
     price : price.value,
@@ -132,8 +132,8 @@ function showData() {
             }
         }
 
-        let deleteButton = createButton('Delete', () => deletePro(i));
-        let updateButton = createButton('Update', () => updateRow(i));
+        const deleteButton = createButton('Delete', () => deletePro(i));
+        const updateButton = createButton('Update', () => updatePro(i));
        
         row.insertCell().appendChild(deleteButton);
         row.insertCell().appendChild(updateButton);
@@ -144,40 +144,11 @@ function showData() {
 }
 
  function createButton(text, clickHandler) {
-    let button = document.createElement('button');
+    const button = document.createElement('button');
     button.textContent = text;
     button.addEventListener('click', clickHandler);
     return button;
 }
-   
- 
-//QUICK AND DIRTY showData LOL
-
-/* function showData() {
-
-   
-    let tableHTML = '';
-
-   array
-    for (let i = 0; i < dataProduct.length; i++) {
-       
-        tableHTML += `<tr>
-                          <td>${i}</td>
-                          <td>${dataProduct[i].title}</td>
-                          <td>${dataProduct[i].price}</td>
-                          <td>${dataProduct[i].taxes}</td>
-                          <td>${dataProduct[i].ads}</td>
-                          <td>${dataProduct[i].discount}</td>
-                          <td>${dataProduct[i].total}</td>
-                          <td>${dataProduct[i].count}</td>
-                          <td>${dataProduct[i].category}</td>
-                          <td><button id="update">update</button></td>
-                          <td><button id="delete">delete</button></td>
-                      </tr>`;
-    }
-
-    document.getElementById('tbody').innerHTML = tableHTML;
-}  */
 
 //DELETE PRODUCT
 
@@ -195,31 +166,43 @@ function deletePro(i) {
 
 // DELETE ALL PRODUCT 
 
-let clearButton = document.createElement('button');
-
-
-let table = document.querySelector('table')
-
-clearButton.innerText = 'clear all';
-
-clearButton.className = 'clear-all'
-
-table.parentElement.insertBefore(clearButton, table);
+     //  ELEMENT CREATION AND MANIPULATION
+    const clearButton = document.createElement('button');
+    const table = document.querySelector('table')
+    clearButton.innerText = 'clear all';
+    clearButton.className = 'clear-all'
+    table.parentElement.insertBefore(clearButton, table);
 
 function clearAll() {
 
+      // CLEAR THE DATA
     dataProduct.length = 0;
 
       // Update the localStorage
     localStorage.product = JSON.stringify(dataProduct);
 
-     // SHOW THE UPGRADED DATA 
-   showData();
+      // SHOW THE UPGRADED DATA 
+    showData();
 } 
 
- 
-
 clearButton.addEventListener('click', clearAll)
+
+// UPDATE 
+
+function updatePro() {
+
+  let inputAllElements = [title, price, taxes, ads, discount, count, category];
+
+    for (let i = 0; i < inputAllElements.length; i++) {
+    inputElements[i].value = dataProduct[i];
+}
+
+  // SHOW THE UPGRADED DATA 
+    showData();
+
+}
+
+
 
 
 
