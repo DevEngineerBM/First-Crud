@@ -87,6 +87,7 @@ if (isUpdating) {
     dataProduct[updatingIndex] = newProduct;
     isUpdating = false;
     updatingIndex = null;
+    submit.textContent = 'CREATE'
     
   } else {
     // Add the new product
@@ -96,8 +97,14 @@ if (isUpdating) {
       }
     } else {
       dataProduct.push(newProduct);
+      count.style.display ='flex'
     }
+    
   }
+  // MAKE COUNT VISIBLE
+  count.style.display ='flex'
+// SET THE SUBMIT'S  ORIGIN COLOR BACK
+  submit.style.backgroundColor ='';
 // PUT NEW PRODUCT ON LOCALSTORAGE
 localStorage.setItem('product', JSON.stringify(dataProduct))
 
@@ -212,7 +219,13 @@ function updatePro(i) {
   count.value = product.count;
   category.value = product.category;
 
-  
+// Hide the 'count' element
+  count.style.display ='none';
+  // STYLE UPDATE BUTTON
+ submit.style.backgroundColor ='green';
+  submit.textContent = 'UPDATE';
+
+
 // ACTIVATE UPDATE MODE INSIDE createPro()
 isUpdating = true;
 updatingIndex = i;
