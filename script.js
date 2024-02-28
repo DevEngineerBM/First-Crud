@@ -8,6 +8,8 @@ const total = document.getElementById('total');
 const count = document.getElementById('count');
 const category = document.getElementById('category');
 const submit = document.getElementById('submit');
+let isUpdating = false;
+let updatingIndex = null;
 
 // GET TOTAL
 
@@ -68,8 +70,6 @@ function createPro() {
         return;
     } 
     
-
-
 // CREATE OBJECTS
 const newProduct = {
 
@@ -83,18 +83,26 @@ const newProduct = {
     category : category.value,
 }
  
-// PUSH NEW OBJECT TO DATA ARRAY
+// PUSH NEW OBJECTS TO DATA ARRAY
 
-if ( count.value > 1 ) {
+// COUNT FUNCTINONALITY
+if (isUpdating) {
+    // Update the existing product
+    dataProduct[updatingIndex] = newProduct;
 
-for (let i = 0; i < count.value; i++ ) {
-    dataProduct.push(newProduct);
-}
-
-} else {
-    dataProduct.push(newProduct);
-}
-
+    isUpdating = false;
+    updatingIndex = null;
+    
+  } else {
+    // Add the new product
+    if (count.value > 1) {
+      for (let i = 0; i < count.value; i++ ) {
+        dataProduct.push(newProduct);
+      }
+    } else {
+      dataProduct.push(newProduct);
+    }
+  }
 // PUT NEW PRODUCT ON LOCALSTORAGE
 localStorage.setItem('product', JSON.stringify(dataProduct))
 
@@ -199,7 +207,7 @@ clearButton.addEventListener('click', clearAll)
 
 function updatePro(i) {
 
-  // Assuming dataProduct[i] is an object with properties that match your input elements
+  // Assuming dataProduct[i] is an object with properties that match THE input elements
   let product = dataProduct[i];
 
   title.value = product.title;
@@ -210,6 +218,10 @@ function updatePro(i) {
   count.value = product.count;
   category.value = product.category;
 
+  
+
+isUpdating = true;
+updatingIndex = i;
 
 
   // SHOW THE UPGRADED DATA 
