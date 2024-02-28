@@ -8,13 +8,14 @@ const total = document.getElementById('total');
 const count = document.getElementById('count');
 const category = document.getElementById('category');
 const submit = document.getElementById('submit');
-let isUpdating = false;
-let updatingIndex = null;
+
+// DECLARE VARIABLES TO TRACK WHETHER WE'RE UPDATING A PRODUCT AND WHICH PRODUCT WE'RE UPDATING
+let isUpdating ;
+let updatingIndex ;
 
 // GET TOTAL
-
 function getTotal() {
-    // ENSURE THE INPUTS ARE NUMBERS, IF NOT, SET THEM TO 0
+    // ENSURE THE INPUTS ARE NUMBERS, IF NOT,  WE SET THEM TO 0
     const priceValue = parseFloat(price.value) || 0;
     const taxesValue = parseFloat(taxes.value) || 0;
     const adsValue = parseFloat(ads.value) || 0;
@@ -34,8 +35,6 @@ function getTotal() {
     }
 }
 
-
-
 // CREATE AN ARRAY DECLARED VARIABLES
 let inputElements = [price, taxes, ads, discount];
 
@@ -46,9 +45,7 @@ inputElements.forEach(function(element) {
 
 getTotal()
 
-
 // CREATE PRODUCT 
-
 let dataProduct;
 
 //CHECK AND BRING LOCAL STORAGE DATA
@@ -85,11 +82,9 @@ const newProduct = {
  
 // PUSH NEW OBJECTS TO DATA ARRAY
 
-// COUNT FUNCTINONALITY
 if (isUpdating) {
     // Update the existing product
     dataProduct[updatingIndex] = newProduct;
-
     isUpdating = false;
     updatingIndex = null;
     
@@ -129,7 +124,6 @@ function clearData() {
 }
 
 submit.addEventListener('click', clearData);
-
 
 //READ
 function showData() {
@@ -219,7 +213,7 @@ function updatePro(i) {
   category.value = product.category;
 
   
-
+// ACTIVATE UPDATE MODE INSIDE createPro()
 isUpdating = true;
 updatingIndex = i;
 
@@ -227,17 +221,6 @@ updatingIndex = i;
   // SHOW THE UPGRADED DATA 
   showData();
 }
-
-
-// COUNT FUNCTIONNALITY 
-
-
-
-
-
-
-
-
 
 
 // CALL showData FUNCTION ON PAGE LOAD
