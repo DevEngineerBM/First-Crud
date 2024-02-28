@@ -85,7 +85,15 @@ const newProduct = {
  
 // PUSH NEW OBJECT TO DATA ARRAY
 
-dataProduct.push(newProduct);
+if ( count.value > 1 ) {
+
+for (let i = 0; i < count.value; i++ ) {
+    dataProduct.push(newProduct);
+}
+
+} else {
+    dataProduct.push(newProduct);
+}
 
 // PUT NEW PRODUCT ON LOCALSTORAGE
 localStorage.setItem('product', JSON.stringify(dataProduct))
@@ -189,20 +197,27 @@ clearButton.addEventListener('click', clearAll)
 
 // UPDATE 
 
-function updatePro() {
+function updatePro(i) {
 
-  let inputAllElements = [title, price, taxes, ads, discount, count, category];
+  // Assuming dataProduct[i] is an object with properties that match your input elements
+  let product = dataProduct[i];
 
-    for (let i = 0; i < inputAllElements.length; i++) {
-    inputElements[i].value = dataProduct[i];
-}
+  title.value = product.title;
+  price.value = product.price;
+  taxes.value = product.taxes;
+  ads.value = product.ads;
+  discount.value = product.discount;
+  count.value = product.count;
+  category.value = product.category;
+
+
 
   // SHOW THE UPGRADED DATA 
-    showData();
-
+  showData();
 }
 
 
+// COUNT FUNCTIONNALITY 
 
 
 
