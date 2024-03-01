@@ -138,7 +138,7 @@ function clearData() {
     total.textContent = '';
     count.value = '';
     category.value = '';
-    search.val
+    search.value = '';
 
 }
 
@@ -256,18 +256,16 @@ updatingIndex = i;
 }
 
 
-// SEARCH
-const searchTitle = document.getElementById('search-title');
+// SEARCH BY TITLE
 const searchInput = document.getElementById('search')
+const searchTitle = document.getElementById('search-title');
 
 function searchByTitle(){
 
   let filter = search.value.toUpperCase();
-
-  console.log(filter);
-
-  let tr = document.getElementById('tbody').getElementsByTagName('tr');
-
+  let tbody =document.getElementById('tbody')
+  let tr = tbody.getElementsByTagName('tr');
+let match = false;
     for (let i = 0; i < tr.length; i++) {
 
         let td = tr[i].getElementsByTagName('td')[1]; 
@@ -275,13 +273,54 @@ function searchByTitle(){
         if (td) {
 
             let txtValue = td.textContent || td.innerText;
-  console.log(txtValue)
+  
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-console.log('Match found');
-                tr[i].style.display = "";
 
+                tr[i].style.display = "";
+                match = true;
             } else {
-console.log('No match found')
+
+                tr[i].style.display = "none";
+
+            }
+        } 
+        }
+
+        if (!match) {
+          alert('no such title in data')
+          clearData()
+        }
+showData();
+     } 
+
+
+searchTitle.addEventListener('click', searchByTitle) 
+
+// SEARCH BY CATEGORY
+const searchCategory = document.getElementById('search-category');
+
+
+function searchByCategory () {
+
+  let filter = search.value.toUpperCase();
+
+  let tbody =document.getElementById('tbody')
+  let tr = tbody.getElementsByTagName('tr');
+let match = false ;
+    for (let i = 0; i < tr.length; i++) {
+
+        let td = tr[i].getElementsByTagName('td')[8]; 
+
+        if (td) {
+
+            let txtValue = td.textContent || td.innerText;
+  
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+
+                tr[i].style.display = "";
+                 match = true;
+            } else {
+
                 tr[i].style.display = "none";
 
             }
@@ -289,15 +328,14 @@ console.log('No match found')
 
      } 
 
+     if (!match) {
+      alert('no such category in data')
+      clearData()
+     }
+showData();
 }
 
-
-
-searchTitle.addEventListener('click', searchByTitle) 
-
-// 
-const searchCategory = document.getElementById('search-category');
-
+searchCategory.addEventListener('click', searchByCategory)
 
 // CALL showData FUNCTION ON PAGE LOAD
 showData();
