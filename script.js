@@ -9,6 +9,8 @@ const count = document.getElementById('count');
 const category = document.getElementById('category');
 const submit = document.getElementById('submit');
 
+
+
 // DECLARE VARIABLES TO TRACK WHETHER WE'RE UPDATING A PRODUCT AND WHICH PRODUCT WE'RE UPDATING
 let isUpdating ;
 let updatingIndex ;
@@ -57,60 +59,69 @@ dataProduct = JSON.parse(localStorage.product)
     dataProduct = [];
 }
 
+
+let  nextId = 1;
+
+function createProHelper(id) {
+    return {
+        id: id,
+        title: title.value,
+        price: price.value,
+        taxes: taxes.value,
+        ads: ads.value,
+        discount: discount.value,
+        total: total.textContent,
+        count: count.value,
+        category: category.value,
+    };
+}
+
 function createPro() {
 
-//CHECK THE FIELDS ARE NOT EMPTY
-
+    // CHECK THE FIELD ARE NOT EMPTY
     if (!title.value || !price.value || !taxes.value || !ads.value || !discount.value || !count.value || !category.value) {
         console.log('One or more fields are empty');
         alert('Please fill necessary fields');
         return;
+
     } 
-    
-// CREATE OBJECTS
-const newProduct = {
 
-    title : title.value,
-    price : price.value,
-    taxes : taxes.value,
-    ads : ads.value,
-    discount : discount.value,
-    total : total.textContent,
-    count : count.value,
-    category : category.value,
-}
- 
-// PUSH NEW OBJECTS TO DATA ARRAY
+    if (isUpdating) {
 
-if (isUpdating) {
-    // Update the existing product
-    dataProduct[updatingIndex] = newProduct;
-    isUpdating = false;
-    updatingIndex = null;
-    submit.textContent = 'CREATE'
-    
-  } else {
-    // Add the new product
-    if (count.value > 1) {
-      for (let i = 0; i < count.value; i++ ) {
-        dataProduct.push(newProduct);
-      }
+        // UPDATE THE EXISTING PRODUCT
+        const updatedProduct = createProHelper(dataProduct[updatingIndex].id); // keep the same id
+        dataProduct[updatingIndex] = updatedProduct;
+
+        isUpdating = false;
+        updatingIndex = null;
+        submit.textContent = 'CREATE';
+
     } else {
-      dataProduct.push(newProduct);
-      count.style.display ='flex'
+        // ADD THE NEW PRODUCT
+        if (count.value > 1) {
+            for (let i = 0; i < count.value; i++ ) {
+                const newProduct = createProHelper(nextId++); // assign the next ID and then increment it
+                dataProduct.push(newProduct);
+            }
+        } else {
+            const newProduct = createProHelper(nextId++); // assign the next ID and then increment it
+            dataProduct.push(newProduct);
+            count.style.display ='flex';
+        }
     }
-    
-  }
-  // MAKE COUNT VISIBLE
-  count.style.display ='flex'
-// SET THE SUBMIT'S  ORIGIN COLOR BACK
-  submit.style.backgroundColor ='';
-// PUT NEW PRODUCT ON LOCALSTORAGE
-localStorage.setItem('product', JSON.stringify(dataProduct))
 
-// CALL  CLEAR AND  SHOW  FUNCTION 
-clearData();
-showData();
+    // MAKE COUNT VISIBLE
+    count.style.display ='flex';
+
+    // SET the SUBMIT'S ORIGIN COLOR BACK
+    submit.style.backgroundColor ='';
+
+    // PUT NEW PRODUCT ON LOCALESTORAGE
+    localStorage.setItem('product', JSON.stringify(dataProduct));
+
+    // CALL CLEAR AND SHOW FUNCTIONS
+    clearData();
+    showData();
 }
 
 submit.addEventListener('click', createPro)
@@ -127,6 +138,7 @@ function clearData() {
     total.textContent = '';
     count.value = '';
     category.value = '';
+    search.val
 
 }
 
@@ -140,8 +152,10 @@ function showData() {
     tableBody.innerHTML = '';
 
     for (let i = 0; i < dataProduct.length; i++) {
+        
         let row = tableBody.insertRow();
-
+        row.id = 'product-' + dataProduct[i].id;
+        
         for (let key in dataProduct[i]) {
             if (dataProduct[i].hasOwnProperty(key)) {
                 let cell = row.insertCell();
@@ -224,9 +238,15 @@ function updatePro(i) {
   // STYLE UPDATE BUTTON
  submit.style.backgroundColor ='green';
   submit.textContent = 'UPDATE';
+// SCROL TO TOP
+  scroll({
+    top : 0,
+    behavior : "smooth",
+
+});
 
 
-// ACTIVATE UPDATE MODE INSIDE createPro()
+// ACTIVATE UPDATE MODE INSIDE createPro() FUNCTION
 isUpdating = true;
 updatingIndex = i;
 
@@ -234,6 +254,49 @@ updatingIndex = i;
   // SHOW THE UPGRADED DATA 
   showData();
 }
+
+
+// SEARCH
+const searchTitle = document.getElementById('search-title');
+const searchInput = document.getElementById('search')
+
+function searchByTitle(){
+
+  let filter = search.value.toUpperCase();
+
+  console.log(filter);
+
+  let tr = document.getElementById('tbody').getElementsByTagName('tr');
+
+    for (let i = 0; i < tr.length; i++) {
+
+        let td = tr[i].getElementsByTagName('td')[1]; 
+
+        if (td) {
+
+            let txtValue = td.textContent || td.innerText;
+  console.log(txtValue)
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+console.log('Match found');
+                tr[i].style.display = "";
+
+            } else {
+console.log('No match found')
+                tr[i].style.display = "none";
+
+            }
+        }
+
+     } 
+
+}
+
+
+
+searchTitle.addEventListener('click', searchByTitle) 
+
+// 
+const searchCategory = document.getElementById('search-category');
 
 
 // CALL showData FUNCTION ON PAGE LOAD
