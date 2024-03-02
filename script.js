@@ -257,7 +257,7 @@ updatingIndex = i;
 
 
 // SEARCH BY TITLE
-const searchInput = document.getElementById('search')
+const search = document.getElementById('search')
 const searchTitle = document.getElementById('search-title');
 
 function searchByTitle(){
@@ -265,7 +265,7 @@ function searchByTitle(){
   let filter = search.value.toUpperCase();
   let tbody =document.getElementById('tbody')
   let tr = tbody.getElementsByTagName('tr');
-let match = false;
+
     for (let i = 0; i < tr.length; i++) {
 
         let td = tr[i].getElementsByTagName('td')[1]; 
@@ -277,7 +277,7 @@ let match = false;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
 
                 tr[i].style.display = "";
-                match = true;
+               
             } else {
 
                 tr[i].style.display = "none";
@@ -285,12 +285,8 @@ let match = false;
             }
         } 
         }
+clearData();
 
-        if (!match) {
-          alert('no such title in data')
-          clearData()
-        }
-showData();
      } 
 
 
@@ -306,7 +302,7 @@ function searchByCategory () {
 
   let tbody =document.getElementById('tbody')
   let tr = tbody.getElementsByTagName('tr');
-let match = false ;
+
     for (let i = 0; i < tr.length; i++) {
 
         let td = tr[i].getElementsByTagName('td')[8]; 
@@ -318,7 +314,7 @@ let match = false ;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
 
                 tr[i].style.display = "";
-                 match = true;
+                 
             } else {
 
                 tr[i].style.display = "none";
@@ -327,12 +323,8 @@ let match = false ;
         }
 
      } 
-
-     if (!match) {
-      alert('no such category in data')
-      clearData()
-     }
-showData();
+ 
+clearData();
 }
 
 searchCategory.addEventListener('click', searchByCategory)
